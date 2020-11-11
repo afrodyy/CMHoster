@@ -103,13 +103,20 @@ class KaryawanController extends Controller
     {
         $id = auth()->user()->id;
         $tanggal = date('d-m-Y');
-        $absensi = Absensi::where('user_id', $id)->value('tanggal', $tanggal);
+        $absensi = DB::table('absensi')->select('tanggal')->where([
+            ['user_id', '=', $id],
+            ['tanggal', '=', $tanggal],
+        ])->take(1)->get();
+        foreach ($absensi as $key => $value) {
+            $date = $value->tanggal;
+        };
+        // dd($date);
         // $month = date('n');
         // $absensi = Absensi::where('user_id', $id)
         //     ->whereMonth('created_at', $month)
         //     ->get();
-        // dd($absensi);
-        if (isset($absensi)) {
+        // dd($date);
+        if (isset($date)) {
             return redirect('absensi')->with('failed', 'Kamu sudah absen hari ini!');
         } else {
             $absen = Absensi::create($request->all());
