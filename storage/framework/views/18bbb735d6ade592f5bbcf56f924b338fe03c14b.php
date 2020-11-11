@@ -35,7 +35,7 @@
                         <div class="dropdown">
                             <button type="button" class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle"
                                 data-toggle="modal" data-target="#default">
-                                <i class="feather icon-plus"></i>
+                                Input Karyawan Alfa
                             </button>
                         </div>
                     </div>
@@ -94,58 +94,39 @@
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel1">Tambah Data VPS</h4>
+                    <h4 class="modal-title" id="myModalLabel1">Input Absen</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="<?php echo e(url('vps/create')); ?>" method="post">
+                    <form action="<?php echo e(url('admin/absen')); ?>" method="post">
                         <?php echo csrf_field(); ?>
                         <div class="form-group">
-                            <label for="">Nama Client</label>
-                            <select name="client_id" class="form-control" required>
-                                <option value="">-- Pilih Client --</option>
+                            <label for="">Nama Karyawan</label>
+                            <select name="user_id" class="form-control" required>
+                                <option value="">-- Pilih Karyawan --</option>
+                                <option value="2">Ahmad Dicky Zulfikar</option>
+                                <option value="3">Fahmi Imam</option>
+                                <option value="6">Faqy Iskandar</option>
+                                <option value="1">Herdian Afrody</option>
+                                <option value="5">Muhammad Alviansyah</option>
+                                <option value="7">Roni Abdul Hamid</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="">Nama VM</label>
-                            <input type="text" name="nama" class="form-control" placeholder="Nama VM" required>
+                            <?php $date = date('d-m-Y'); ?>
+                            <label for="">Tanggal</label>
+                            <input type="text" name="tanggal" class="form-control" value="<?php echo e($date); ?>" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="">IP Address</label>
-                            <input type="text" name="ip_address" class="form-control" placeholder="IP Address" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Lokasi Server</label>
-                            <select name="lokasi" id="" class="form-control" required>
-                                <option value="">-- Pilih Lokasi Server --</option>
-                                <option value="S3">S3</option>
-                                <option value="S4">S4</option>
-                            </select>
+                            <?php $waktu = date('H:i:s'); ?>
+                            <label for="">Waktu</label>
+                            <input type="text" name="waktu" class="form-control" value="<?php echo e($waktu); ?>" readonly>
                         </div>
                         <div class="form-group">
                             <label for="">Status</label>
-                            <ul class="list-unstyled my-1">
-                                <li class="d-inline-block mr-2">
-                                    <fieldset>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input" name="status" value="Aktif"
-                                                id="customRadio1" checked>
-                                            <label class="custom-control-label" for="customRadio1">Aktif</label>
-                                        </div>
-                                    </fieldset>
-                                </li>
-                                <li class="d-inline-block mr-2">
-                                    <fieldset>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input" name="status" value="Non-aktif"
-                                                id="customRadio2">
-                                            <label class="custom-control-label" for="customRadio2">Non-aktif</label>
-                                        </div>
-                                    </fieldset>
-                                </li>
-                            </ul>
+                            <input type="text" name="status" class="form-control" value="Tidak Masuk" readonly>
                         </div>
                 </div>
                 <div class="modal-footer">

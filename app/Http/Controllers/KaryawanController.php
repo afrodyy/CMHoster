@@ -73,6 +73,12 @@ class KaryawanController extends Controller
         return view('administrator/data_karyawan', compact('karyawan'));
     }
 
+    public function admin_absen(Request $request)
+    {
+        $absensi = Absensi::create($request->all());
+        return redirect('karyawan/' . $request->user_id . '/profile')->with('success', 'Keterangan Tidak Masuk berhasil diinput');
+    }
+
     public function profil_karyawan($id)
     {
         $month = date('n');
@@ -85,8 +91,9 @@ class KaryawanController extends Controller
         $absensi = Absensi::where('user_id', $id)->get();
         $tepatWaktu = Absensi::where('user_id', $id)->where('status', 'Tepat Waktu')->count();
         $telat = Absensi::where('user_id', $id)->where('status', 'Telat')->count();
+        $tidakMasuk = Absensi::where('user_id', $id)->where('status', 'Tidak Masuk')->count();
 
-        return view('administrator/profil_karyawan', compact('karyawan', 'cashbond', 'absensi', 'tepatWaktu', 'telat'));
+        return view('administrator/profil_karyawan', compact('karyawan', 'cashbond', 'absensi', 'tepatWaktu', 'telat', 'tidakMasuk'));
     }
 
     public function absensi()

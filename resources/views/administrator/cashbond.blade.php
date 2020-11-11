@@ -68,7 +68,7 @@
                                             @foreach ($cashbond as $item)
                                                 <tr>
                                                     <th>{{ $loop->iteration }}.</th>
-                                                    <td>{{ $item->user->name }}</td>
+                                                    <td><a href="{{ url('karyawan/' . $item->user->id . '/profile') }}">{{ $item->user->name }}</a></td>
                                                     <td>Rp. {{ number_format($item->nominal) }}</td>
                                                     <td>Rp. {{ number_format($item->kredit) }}</td>
                                                     <td>{{ $item->tanggal_pengajuan }}</td>

@@ -131,20 +131,30 @@
                         <!-- cashbond end -->
 
                         <div class="col-xl-4 col-md-6 col-sm-12">
+                            <?php if(session('success')): ?>
+                            <div class="alert alert-info">
+                                <?php echo e(session('success')); ?>
+
+                            </div>
+                            <?php endif; ?>
                             <div class="card">
                                 <div class="card-content">
                                     <div class="card-body">
                                         <h2>Absensi</h2>
-                                        <p class="card-text">Total Absensi</p>
+                                        <p class="card-text">Total Absensi : <span class="badge badge-pill bg-info"><?php echo e($tepatWaktu + $telat); ?></span></p>
                                     </div>
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item">
-                                            <span class="badge badge-pill bg-info float-right"><?php echo e($tepatWaktu); ?></span>
+                                            <span class="badge badge-pill bg-success float-right"><?php echo e($tepatWaktu); ?></span>
                                             Tepat Waktu
                                         </li>
                                         <li class="list-group-item">
                                             <span class="badge badge-pill bg-warning float-right"><?php echo e($telat); ?></span>
                                             Telat
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="badge badge-pill bg-danger float-right"><?php echo e($tidakMasuk); ?></span>
+                                            Tidak Masuk
                                         </li>
                                     </ul>
                                 </div>

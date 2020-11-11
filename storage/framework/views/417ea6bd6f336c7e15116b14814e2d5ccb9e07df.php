@@ -71,7 +71,7 @@
                                             <?php $__currentLoopData = $cashbond; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <th><?php echo e($loop->iteration); ?>.</th>
-                                                    <td><?php echo e($item->user->name); ?></td>
+                                                    <td><a href="<?php echo e(url('karyawan/' . $item->user->id . '/profile')); ?>"><?php echo e($item->user->name); ?></a></td>
                                                     <td>Rp. <?php echo e(number_format($item->nominal)); ?></td>
                                                     <td>Rp. <?php echo e(number_format($item->kredit)); ?></td>
                                                     <td><?php echo e($item->tanggal_pengajuan); ?></td>

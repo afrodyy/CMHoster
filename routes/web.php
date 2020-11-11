@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth', 'checkRole:owner,admin']], function () {
     Route::post('admin/cashbond/pembayaran', [KaryawanController::class, 'pengajuan']);
     Route::get('admin/data_karyawan', [KaryawanController::class, 'data_karyawan']);
     Route::get('karyawan/{id}/profile', [KaryawanController::class, 'profil_karyawan']);
+    Route::post('admin/absen', [KaryawanController::class, 'admin_absen']);
 });
 
 Route::group(['middleware' => ['auth', 'checkRole:user,noc,admin']], function () {
