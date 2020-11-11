@@ -34,7 +34,7 @@
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-md-4 mt-2">
+                    <div class="col-md-4 offset-1 mt-2">
                         <form action="{{ url('absen') }}" method="post">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
@@ -52,7 +52,7 @@
                 </div>
                 <!-- Table head options start -->
                 <div class="row" id="table-head">
-                    <div class="col-12">
+                    <div class="col-10 offset-1">
                         <div class="card">
                             <div class="card-content">
                                 <div class="table-responsive">
