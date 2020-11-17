@@ -60,13 +60,13 @@
                                                     <td>{{ $k->name }}</td>
                                                     <td>
                                                         <a href="{{ url('karyawan/' . $k->id . '/profile') }}"
-                                                            class="btn btn-info btn-sm">View Profile</a>
+                                                            class="btn btn-sm bg-gradient-info">View Profile</a>
                                                         <form action="{{ url('karyawan/' . $k->id . '/delete') }}"
                                                             method="get" class="d-inline"
                                                             onclick="return confirm('Data Karyawan dengan Nama {{ $k->name }} akan dihapus?')">
                                                             @method('delete')
                                                             @csrf
-                                                            <button class="btn btn-danger btn-sm"
+                                                            <button class="btn btn-sm bg-gradient-danger"
                                                                 type="submit">Hapus</button>
                                                         </form>
                                                     </td>

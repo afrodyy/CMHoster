@@ -72,15 +72,16 @@
                                                 <tr>
                                                     <th><?php echo e($loop->iteration); ?>.</th>
                                                     <td><a href="<?php echo e(url('karyawan/' . $item->user->id . '/profile')); ?>"><?php echo e($item->user->name); ?></a></td>
-                                                    <td>Rp. <?php echo e(number_format($item->nominal)); ?></td>
-                                                    <td>Rp. <?php echo e(number_format($item->kredit)); ?></td>
+                                                    <td style="color: green">Rp. <?php echo e(number_format($item->nominal)); ?></td>
+                                                    <td style="color: red">Rp. <?php echo e(number_format($item->kredit)); ?></td>
                                                     <td><?php echo e($item->tanggal_pengajuan); ?></td>
                                                     <td><?php echo e($item->status); ?></td>
                                                     <td>
-                                                        <a href="<?php echo e(url('admin/cashbond/' . $item->id . '/konfirmasi')); ?>"
-                                                            class="btn btn-info btn-sm">Konfirmasi</a>
+                                                        <?php if($item->status !== '-'): ?>
+                                                            <a href="<?php echo e(url('admin/cashbond/' . $item->id . '/konfirmasi')); ?>" class="btn btn-sm bg-gradient-info">Konfirmasi</a>
+                                                        <?php endif; ?>
                                                         <a href="<?php echo e(url('admin/cashbond/' . $item->id . '/hapus')); ?>"
-                                                            class="btn btn-danger btn-sm"
+                                                            class="btn btn-sm bg-gradient-danger"
                                                             onclick="return confirm('Kamu mau batalin pengajuan cashbond?')">Hapus</a>
                                                     </td>
                                                 </tr>

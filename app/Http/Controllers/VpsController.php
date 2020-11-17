@@ -55,8 +55,8 @@ class VpsController extends Controller
                             <td>' . $row->lokasi . '</td>
                             <td>' . $row->status . '</td>
                             <td>' .
-                        '<a href="/vps/' . $row->id . '/edit" class="btn btn-info btn-sm">Ubah</a>' .
-                        '<a href="/vps/' . $row->id . '/delete" method="get" class="btn btn-danger btn-sm ml-1" onclick="return confirm' . ("Data VPS dengan Nama VM . $row->nama . akan dihapus?") . '">Hapus</a>'
+                        '<a href="/vps/' . $row->id . '/edit" class="btn btn-sm bg-gradient-info">Ubah</a>' .
+                        '<a href="/vps/' . $row->id . '/delete" method="get" class="btn btn-sm bg-gradient-danger ml-1" onclick="return confirm' . ("Data VPS dengan Nama VM . $row->nama . akan dihapus?") . '">Hapus</a>'
                         . '</td>
                         </tr>
                         ';

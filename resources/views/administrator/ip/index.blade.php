@@ -40,18 +40,13 @@
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-md-4 mt-2">
-                        <a href="{{ url('master_ip') }}" class="btn-icon btn btn-primary btn-round btn-sm">
-                            Tampilkan Semua Data
-                        </a>
-                    </div>
-                    <div class="col-md-4 offset-4">
+                    <div class="col-lg-4 offset-8">
                         <section id="search-bar">
                             <div class="search-bar right">
                                 <form action="{{ url('master_ip') }}" method="get">
                                     <fieldset class="form-group position-relative has-icon-left">
-                                        <input type="search" name="cari" class="form-control round" id="searchbar"
-                                            placeholder="Cari Alamat IP">
+                                        <input type="search" name="cari" class="form-control round" id="cari"
+                                            placeholder="Cari Alamat IP" autocomplete="off">
                                         <div class="form-control-position">
                                             <i class="feather icon-search px-1"></i>
                                         </div>
@@ -83,13 +78,13 @@
                                                     <td>{{ $item->ip_address }}</td>
                                                     <td>{{ $item->status }}</td>
                                                     <td>
-                                                        <a href="" class="btn btn-info btn-sm">Ubah</a>
+                                                        <a href="" class="btn btn-sm bg-gradient-info">Ubah</a>
                                                         <form action="{{ url('master_ip/' . $item->id . '/delete') }}"
                                                             method="get" class="d-inline"
                                                             onclick="return confirm('IP Address {{ $item->ip_address }} akan dihapus?')">
                                                             @method('delete')
                                                             @csrf
-                                                            <button class="btn btn-danger btn-sm"
+                                                            <button class="btn btn-sm bg-gradient-danger"
                                                                 type="submit">Hapus</button>
                                                         </form>
                                                     </td>
@@ -158,4 +153,35 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascript')
+    <script>
+        $(document).ready(function() {
+
+            fetch_ip_data();
+
+            function fetch_ip_data(query = '') {
+                $.ajax({
+                    url: "{{ route('ip.search') }}",
+                    method: "GET",
+                    data: {
+                        query: query
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        $('tbody').html(data.table_data);
+                        $('#total_records').text(data.total_data);
+                    }
+                });
+            }
+
+            $(document).on('keyup', '#cari', function() {
+                var query = $(this).val();
+                fetch_ip_data(query);
+            });
+
+        });
+
+    </script>
 @endsection

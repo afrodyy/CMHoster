@@ -43,12 +43,7 @@
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-md-4 mt-2">
-                        <a href="<?php echo e(url('vps')); ?>" class="btn-icon btn btn-primary btn-round btn-sm">
-                            Tampilkan Semua Data
-                        </a>
-                    </div>
-                    <div class="col-md-4 offset-4">
+                    <div class="col-lg-4 offset-8">
                         <section id="search-bar">
                             <div class="search-bar right">
                                 <form action="<?php echo e(url('vps')); ?>" method="get">
@@ -63,7 +58,6 @@
                             </div>
                         </section>
                     </div>
-                    
                 </div>
                 <!-- Table head options start -->
                 <div class="row" id="table-head">
@@ -94,13 +88,13 @@
                                                     <td><?php echo e($v->status); ?></td>
                                                     <td>
                                                         <a href="<?php echo e(url('vps/' . $v->id . '/edit')); ?>"
-                                                            class="btn btn-info btn-sm">Ubah</a>
+                                                            class="btn btn-sm bg-gradient-info">Ubah</a>
                                                         <form action="<?php echo e(url('vps/' . $v->id . '/delete')); ?>" method="get"
                                                             class="d-inline"
                                                             onclick="return confirm('Data VPS dengan Nama VM <?php echo e($v->nama); ?> akan dihapus?')">
                                                             <?php echo method_field('delete'); ?>
                                                             <?php echo csrf_field(); ?>
-                                                            <button class="btn btn-danger btn-sm"
+                                                            <button class="btn btn-sm bg-gradient-danger"
                                                                 type="submit">Hapus</button>
                                                         </form>
                                                     </td>

@@ -96,6 +96,46 @@ class KaryawanController extends Controller
         return view('administrator/profil_karyawan', compact('karyawan', 'cashbond', 'absensi', 'tepatWaktu', 'telat', 'tidakMasuk'));
     }
 
+    function cashbondByMonth(Request $request)
+    {
+        if ($request->ajax()) {
+            $output = '';
+            $query = $request->get('query');
+            if ($query != '') {
+                $data = Cashbond::whereMonth('created_at', $query)->get();
+            } else {
+                $data = Cashbond::all();
+            }
+            $total_row = $data->count();
+            if ($total_row > 0) {
+                $number = 0;
+                foreach ($data as $row) {
+                    $number++;
+                    $output .= '
+                        <tr>
+                            <th>' . $number . '.' . '</th>
+                            <td>Rp.' . number_format($row->tanggal_pengajuan) . '</td>
+                            <td>Rp.' . number_format($row->nominal) . '</td>
+                            <td>' . $row->kredit . '</td>
+                            <td>' . date('d-m-y') . '</td>
+                        </tr>
+                        ';
+                }
+            } else {
+                $output = '
+                    <tr>
+                        <td align="center" colspan="7">Data tidak ditemukan</td>
+                    </tr>
+       ';
+            }
+            $data = array(
+                'table_data'  => $output,
+                'total_data'  => $total_row
+            );
+            echo json_encode($data);
+        }
+    }
+
     public function absensi()
     {
         $month = date('n');

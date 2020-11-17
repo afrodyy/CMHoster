@@ -40,17 +40,12 @@
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-md-4 mt-2">
-                        <a href="{{ url('client') }}" class="btn-icon btn btn-primary btn-round btn-sm">
-                            Tampilkan Semua Data
-                        </a>
-                    </div>
-                    <div class="col-md-4 offset-4">
+                    <div class="col-lg-4 offset-8">
                         <section id="search-bar">
                             <div class="search-bar right">
                                 <form action="{{ url('client') }}" method="get">
                                     <fieldset class="form-group position-relative has-icon-left">
-                                        <input type="search" name="cari" class="form-control round" id="searchbar"
+                                        <input type="search" name="cari" class="form-control round" id="cari"
                                             placeholder="Cari data client">
                                         <div class="form-control-position">
                                             <i class="feather icon-search px-1"></i>
@@ -70,29 +65,29 @@
                                     <table class="table table-hover table-striped mb-0">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th scope="col" class="text-center">#</th>
-                                                <th scope="col" class="text-center">Nama</th>
-                                                <th scope="col" class="text-center">Email</th>
-                                                <th scope="col" class="text-center">No. Telpon</th>
-                                                <th scope="col" class="text-center">Aksi</th>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Nama</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">No. Telpon</th>
+                                                <th scope="col">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($client as $c)
                                                 <tr>
-                                                    <th class="text-center" scope="row">{{ $loop->iteration }}.</th>
-                                                    <td class="text-center">{{ $c->nama }}</td>
-                                                    <td class="text-center">{{ $c->email }}</td>
-                                                    <td class="text-center">{{ $c->no_telp }}</td>
-                                                    <td class="text-center">
+                                                    <th scope="row">{{ $loop->iteration }}.</th>
+                                                    <td>{{ $c->nama }}</td>
+                                                    <td>{{ $c->email }}</td>
+                                                    <td>{{ $c->no_telp }}</td>
+                                                    <td>
                                                         <a href="{{ url('client/' . $c->id . '/edit') }}"
-                                                            class="btn btn-info btn-sm">Ubah</a>
+                                                            class="btn btn-sm bg-gradient-info">Ubah</a>
                                                         <form action="{{ url('client/' . $c->id . '/delete') }}"
                                                             method="get" class="d-inline"
                                                             onclick="return confirm('Client dengan nama {{ $c->nama }} akan dihapus?')">
                                                             @method('delete')
                                                             @csrf
-                                                            <button class="btn btn-danger btn-sm"
+                                                            <button class="btn btn-sm bg-gradient-danger"
                                                                 type="submit">Hapus</button>
                                                         </form>
                                                     </td>
@@ -147,4 +142,35 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascript')
+    <script>
+        $(document).ready(function() {
+
+            fetch_client_data();
+
+            function fetch_client_data(query = '') {
+                $.ajax({
+                    url: "{{ route('client.search') }}",
+                    method: "GET",
+                    data: {
+                        query: query
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        $('tbody').html(data.table_data);
+                        $('#total_records').text(data.total_data);
+                    }
+                });
+            }
+
+            $(document).on('keyup', '#cari', function() {
+                var query = $(this).val();
+                fetch_client_data(query);
+            });
+
+        });
+
+    </script>
 @endsection

@@ -18,23 +18,23 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-left mb-0">Riwayat absen kamu bulan {{ date('F') }}</h2>
-                        </div>
-                        @if (session('success'))
+                            @if (session('success'))
                             <div class="alert alert-success mt-1">
                                 {{ session('success') }}
                             </div>
-                        @elseif (session('failed'))
+                            @elseif (session('failed'))
                             <div class="alert alert-danger mt-1">
                                 {{ session('failed') }}
                             </div>
-                        @endif
+                            @endif
+                            <h2 class="content-header-title float-left">Riwayat absen kamu bulan {{ date('F') }}</h2>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-md-4 offset-1 mt-2">
+                    <div class="col-md-4 offset-1">
                         <form action="{{ url('absen') }}" method="post">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
@@ -66,14 +66,24 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($absensi as $item)
+                                            @php
+                                                $total_row = $absensi->count();
+                                            @endphp
+
+                                            @if ($total_row > 0)
+                                                @foreach ($absensi as $item)
+                                                    <tr>
+                                                        <th>{{ $loop->iteration }}.</th>
+                                                        <td>{{ $item->tanggal }}</td>
+                                                        <td>{{ $item->waktu }}</td>
+                                                        <td>{{ $item->status }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
                                                 <tr>
-                                                    <th>{{ $loop->iteration }}.</th>
-                                                    <td>{{ $item->tanggal }}</td>
-                                                    <td>{{ $item->waktu }}</td>
-                                                    <td>{{ $item->status }}</td>
+                                                    <th class="text-center" colspan="4">Data tidak ditemukan</th>
                                                 </tr>
-                                            @endforeach
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>

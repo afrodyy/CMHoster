@@ -6,12 +6,31 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Rules\MatchOldPassword;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Absensi;
+use App\Models\Cashbond;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard.index');
+        $id = auth()->user()->id;
+        $absensi = Absensi::where('user_id', $id)->where('status', 'Tidak Masuk')->count();
+        $month = date('n');
+        $cashbond = Cashbond::where('user_id', $id)
+            ->where('status', 'Disetujui')
+            ->orWhere('status', '-')
+            ->whereMonth('created_at', $month)
+            ->get();
+
+        foreach ($cashbond as $c) {
+            $debit = $c->nominal;
+        }
+
+        if (empty($debit)) {
+            $debit = 0;
+        }
+
+        return view('dashboard.index', compact('absensi', 'cashbond', 'debit'));
     }
 
     public function profile($id)

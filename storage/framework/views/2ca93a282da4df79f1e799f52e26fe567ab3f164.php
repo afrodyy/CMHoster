@@ -43,18 +43,13 @@
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-md-4 mt-2">
-                        <a href="<?php echo e(url('master_ip')); ?>" class="btn-icon btn btn-primary btn-round btn-sm">
-                            Tampilkan Semua Data
-                        </a>
-                    </div>
-                    <div class="col-md-4 offset-4">
+                    <div class="col-lg-4 offset-8">
                         <section id="search-bar">
                             <div class="search-bar right">
                                 <form action="<?php echo e(url('master_ip')); ?>" method="get">
                                     <fieldset class="form-group position-relative has-icon-left">
-                                        <input type="search" name="cari" class="form-control round" id="searchbar"
-                                            placeholder="Cari Alamat IP">
+                                        <input type="search" name="cari" class="form-control round" id="cari"
+                                            placeholder="Cari Alamat IP" autocomplete="off">
                                         <div class="form-control-position">
                                             <i class="feather icon-search px-1"></i>
                                         </div>
@@ -86,13 +81,13 @@
                                                     <td><?php echo e($item->ip_address); ?></td>
                                                     <td><?php echo e($item->status); ?></td>
                                                     <td>
-                                                        <a href="" class="btn btn-info btn-sm">Ubah</a>
+                                                        <a href="" class="btn btn-sm bg-gradient-info">Ubah</a>
                                                         <form action="<?php echo e(url('master_ip/' . $item->id . '/delete')); ?>"
                                                             method="get" class="d-inline"
                                                             onclick="return confirm('IP Address <?php echo e($item->ip_address); ?> akan dihapus?')">
                                                             <?php echo method_field('delete'); ?>
                                                             <?php echo csrf_field(); ?>
-                                                            <button class="btn btn-danger btn-sm"
+                                                            <button class="btn btn-sm bg-gradient-danger"
                                                                 type="submit">Hapus</button>
                                                         </form>
                                                     </td>
@@ -161,6 +156,37 @@
             </div>
         </div>
     </div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('javascript'); ?>
+    <script>
+        $(document).ready(function() {
+
+            fetch_ip_data();
+
+            function fetch_ip_data(query = '') {
+                $.ajax({
+                    url: "<?php echo e(route('ip.search')); ?>",
+                    method: "GET",
+                    data: {
+                        query: query
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        $('tbody').html(data.table_data);
+                        $('#total_records').text(data.total_data);
+                    }
+                });
+            }
+
+            $(document).on('keyup', '#cari', function() {
+                var query = $(this).val();
+                fetch_ip_data(query);
+            });
+
+        });
+
+    </script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\noc\resources\views/administrator/ip/index.blade.php ENDPATH**/ ?>

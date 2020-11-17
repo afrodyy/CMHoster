@@ -67,20 +67,31 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php $__currentLoopData = $cashbond; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <?php
+                                                $total_row = $cashbond->count();
+                                            ?>
+                                            <?php if($total_row > 0): ?>
+                                                <?php $__currentLoopData = $cashbond; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <tr>
+                                                        <th><?php echo e($loop->iteration); ?>.</th>
+                                                        <td>Rp. <?php echo e(number_format($item->nominal)); ?></td>
+                                                        <td>Rp. <?php echo e(number_format($item->kredit)); ?></td>
+                                                        <td><?php echo e($item->tanggal_pengajuan); ?></td>
+                                                        <td><?php echo e($item->status); ?></td>
+                                                        <td>
+                                                            <?php if($item->status === 'Menunggu konfirmasi'): ?>
+                                                                <a href="<?php echo e(url('cashbond/' . $item->id . '/cancel')); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Kamu mau batalin pengajuan cashbond?')">Batal</a>
+                                                            <?php elseif($item->status === 'Disetujui'): ?>
+                                                                <a href="" class="btn btn-success btn-sm" onclick="return confirm('Langsung bayar ke Faqy ya!')">Bayar</a>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php else: ?>
                                                 <tr>
-                                                    <th><?php echo e($loop->iteration); ?>.</th>
-                                                    <td>Rp. <?php echo e(number_format($item->nominal)); ?></td>
-                                                    <td>Rp. <?php echo e(number_format($item->kredit)); ?></td>
-                                                    <td><?php echo e($item->tanggal_pengajuan); ?></td>
-                                                    <td><?php echo e($item->status); ?></td>
-                                                    <td>
-                                                        <a href="<?php echo e(url('cashbond/' . $item->id . '/cancel')); ?>"
-                                                            class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Kamu mau batalin pengajuan cashbond?')">Batal</a>
-                                                    </td>
+                                                    <th class="text-center" colspan="6">Data tidak ditemukan</th>
                                                 </tr>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>

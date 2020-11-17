@@ -69,15 +69,16 @@
                                                 <tr>
                                                     <th>{{ $loop->iteration }}.</th>
                                                     <td><a href="{{ url('karyawan/' . $item->user->id . '/profile') }}">{{ $item->user->name }}</a></td>
-                                                    <td>Rp. {{ number_format($item->nominal) }}</td>
-                                                    <td>Rp. {{ number_format($item->kredit) }}</td>
+                                                    <td style="color: green">Rp. {{ number_format($item->nominal) }}</td>
+                                                    <td style="color: red">Rp. {{ number_format($item->kredit) }}</td>
                                                     <td>{{ $item->tanggal_pengajuan }}</td>
                                                     <td>{{ $item->status }}</td>
                                                     <td>
-                                                        <a href="{{ url('admin/cashbond/' . $item->id . '/konfirmasi') }}"
-                                                            class="btn btn-info btn-sm">Konfirmasi</a>
+                                                        @if ($item->status !== '-')
+                                                            <a href="{{ url('admin/cashbond/' . $item->id . '/konfirmasi') }}" class="btn btn-sm bg-gradient-info">Konfirmasi</a>
+                                                        @endif
                                                         <a href="{{ url('admin/cashbond/' . $item->id . '/hapus') }}"
-                                                            class="btn btn-danger btn-sm"
+                                                            class="btn btn-sm bg-gradient-danger"
                                                             onclick="return confirm('Kamu mau batalin pengajuan cashbond?')">Hapus</a>
                                                     </td>
                                                 </tr>

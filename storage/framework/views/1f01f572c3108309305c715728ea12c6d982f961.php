@@ -93,9 +93,6 @@
                                                                     <option value="Ditolak" <?php if($cashbond->status == 'Ditolak'): ?>
                                                                         selected
                                                                         <?php endif; ?>>Ditolak</option>
-                                                                    <option value="Lunas" <?php if($cashbond->tatus == 'Lunas'): ?>
-                                                                        selected
-                                                                        <?php endif; ?>>Lunas</option>
                                                                 </select>
                                                                 <div class="form-control-position">
                                                                     <i class="feather icon-mail"></i>

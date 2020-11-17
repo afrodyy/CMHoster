@@ -63,13 +63,13 @@
                                                     <td><?php echo e($k->name); ?></td>
                                                     <td>
                                                         <a href="<?php echo e(url('karyawan/' . $k->id . '/profile')); ?>"
-                                                            class="btn btn-info btn-sm">View Profile</a>
+                                                            class="btn btn-sm bg-gradient-info">View Profile</a>
                                                         <form action="<?php echo e(url('karyawan/' . $k->id . '/delete')); ?>"
                                                             method="get" class="d-inline"
                                                             onclick="return confirm('Data Karyawan dengan Nama <?php echo e($k->name); ?> akan dihapus?')">
                                                             <?php echo method_field('delete'); ?>
                                                             <?php echo csrf_field(); ?>
-                                                            <button class="btn btn-danger btn-sm"
+                                                            <button class="btn btn-sm bg-gradient-danger"
                                                                 type="submit">Hapus</button>
                                                         </form>
                                                     </td>

@@ -64,20 +64,31 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($cashbond as $item)
+                                            @php
+                                                $total_row = $cashbond->count();
+                                            @endphp
+                                            @if ($total_row > 0)
+                                                @foreach ($cashbond as $item)
+                                                    <tr>
+                                                        <th>{{ $loop->iteration }}.</th>
+                                                        <td>Rp. {{ number_format($item->nominal) }}</td>
+                                                        <td>Rp. {{ number_format($item->kredit) }}</td>
+                                                        <td>{{ $item->tanggal_pengajuan }}</td>
+                                                        <td>{{ $item->status }}</td>
+                                                        <td>
+                                                            @if ($item->status === 'Menunggu konfirmasi')
+                                                                <a href="{{ url('cashbond/' . $item->id . '/cancel') }}" class="btn btn-danger btn-sm" onclick="return confirm('Kamu mau batalin pengajuan cashbond?')">Batal</a>
+                                                            @elseif ($item->status === 'Disetujui')
+                                                                <a href="" class="btn btn-success btn-sm" onclick="return confirm('Langsung bayar ke Faqy ya!')">Bayar</a>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
                                                 <tr>
-                                                    <th>{{ $loop->iteration }}.</th>
-                                                    <td>Rp. {{ number_format($item->nominal) }}</td>
-                                                    <td>Rp. {{ number_format($item->kredit) }}</td>
-                                                    <td>{{ $item->tanggal_pengajuan }}</td>
-                                                    <td>{{ $item->status }}</td>
-                                                    <td>
-                                                        <a href="{{ url('cashbond/' . $item->id . '/cancel') }}"
-                                                            class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Kamu mau batalin pengajuan cashbond?')">Batal</a>
-                                                    </td>
+                                                    <th class="text-center" colspan="6">Data tidak ditemukan</th>
                                                 </tr>
-                                            @endforeach
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>

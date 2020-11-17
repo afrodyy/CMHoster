@@ -11,7 +11,7 @@
     <meta name="keywords"
         content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>Login Page - Vuexy - Bootstrap HTML admin template</title>
+    <title>CMHoster | Login</title>
     <link rel="apple-touch-icon" href="{{ URL::asset('app-assets/images/ico/apple-icon-120.png') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ URL::asset('app-assets/images/ico/favicon.ico') }}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600" rel="stylesheet">
@@ -70,7 +70,7 @@
                                                 <h4 class="mb-0">Login</h4>
                                             </div>
                                         </div>
-                                        <p class="px-2">Welcome back NOC, please login to your account.</p>
+                                        <p class="px-2">Selamat datang!<br>Silahkan masukan username dan password kamu.</p>
                                         @if (session('warning'))
                                             <div class="alert alert-danger">
                                                 {{ session('warning') }}

@@ -46,6 +46,7 @@
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo e(URL::asset('assets/css/style.css')); ?>">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!-- END: Custom CSS-->
 
 </head>
@@ -68,19 +69,13 @@
                                         class="ficon feather icon-menu"></i></a></li>
                         </ul>
                         <ul class="nav navbar-nav">
-                            <li class="nav-item d-none d-lg-block"><a class="nav-link bookmark-star"><i
-                                        class="ficon feather icon-star warning"></i></a>
+                            <li class="nav-item d-none d-lg-block"><a class="nav-link bookmark-star"><i class="ficon feather icon-star warning"></i></a>
                                 <div class="bookmark-input search-input">
                                     <div class="bookmark-input-icon"><i class="feather icon-search primary"></i></div>
                                     <input class="form-control input" type="text" placeholder="Explore Vuexy..."
                                         tabindex="0" data-search="template-list">
                                     <ul class="search-list search-list-bookmark"></ul>
                                 </div>
-                                <!-- select.bookmark-select-->
-                                <!--   option Chat-->
-                                <!--   option email-->
-                                <!--   option todo-->
-                                <!--   option Calendar-->
                             </li>
                         </ul>
                     </div>
@@ -91,7 +86,7 @@
                                     class="ficon feather icon-search"></i></a>
                             <div class="search-input">
                                 <div class="search-input-icon"><i class="feather icon-search primary"></i></div>
-                                <input class="input" type="text" placeholder="Explore Vuexy..." tabindex="-1"
+                                <input class="input" type="text" placeholder="Explore ..." tabindex="-1"
                                     data-search="template-list">
                                 <div class="search-input-close"><i class="feather icon-x"></i></div>
                                 <ul class="search-list search-list-main"></ul>
@@ -233,8 +228,8 @@
                         href="<?php echo e(URL::asset('html/ltr/vertical-menu-template/index.html')); ?>">
                         
                         <h2 class="brand-text mb-0">CMHoster</h2>
-                    </a></li>
-                
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="shadow-bottom"></div>
@@ -249,16 +244,11 @@
                 <?php $role = auth()->user()->role; ?>
                 <?php if($role === 'owner' || $role === 'noc'): ?>
                     <li class="navigation-header"><span>Network Operating Center</span></li>
-                    <li class=" nav-item">
-                        <a href="<?php echo e(url('vps')); ?>">
-                            <i class="feather icon-activity"></i>
-                            <span class="menu-title" data-i18n="Dashboard">VPS</span>
-                        </a>
-                    </li>
+                    
                     <li class="nav-item has-sub"><a href="#"><i class="feather icon-user"></i><span class="menu-title"
                                 data-i18n="Ecommerce">Administrator</span></a>
                         <ul class="menu-content" style="">
-                            <li class="is-shown <?php echo $__env->yieldContent('server'); ?>"><a href="<?php echo e(url('server')); ?>"><i
+                            <li class="is-shown <?php echo $__env->yieldContent('server'); ?>"><a href="<?php echo e(url('vps')); ?>"><i
                                         class="feather icon-circle"></i><span class="menu-item"
                                         data-i18n="Shop">Server</span></a>
                             </li>
@@ -266,7 +256,7 @@
                                         class="feather icon-circle"></i><span class="menu-item"
                                         data-i18n="Shop">Client</span></a>
                             </li>
-                            <li class="is-shown"><a href="#"><i class="feather icon-circle"></i><span class="menu-item"
+                            <li class="is-shown <?php echo $__env->yieldContent('location'); ?>"><a href="<?php echo e(url('location')); ?>"><i class="feather icon-circle"></i><span class="menu-item"
                                         data-i18n="Details">Locations</span></a>
                             </li>
                             <li class="is-shown"><a href="#"><i class="feather icon-circle"></i><span class="menu-item"
@@ -353,6 +343,8 @@
     
 
     <script src="<?php echo e(URL::asset('app-assets/js/scripts/components.js')); ?>"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->

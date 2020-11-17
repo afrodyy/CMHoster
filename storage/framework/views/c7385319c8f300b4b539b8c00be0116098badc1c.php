@@ -20,25 +20,25 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-left mb-0">Riwayat absen kamu bulan <?php echo e(date('F')); ?></h2>
-                        </div>
-                        <?php if(session('success')): ?>
+                            <?php if(session('success')): ?>
                             <div class="alert alert-success mt-1">
                                 <?php echo e(session('success')); ?>
 
                             </div>
-                        <?php elseif(session('failed')): ?>
+                            <?php elseif(session('failed')): ?>
                             <div class="alert alert-danger mt-1">
                                 <?php echo e(session('failed')); ?>
 
                             </div>
-                        <?php endif; ?>
+                            <?php endif; ?>
+                            <h2 class="content-header-title float-left">Riwayat absen kamu bulan <?php echo e(date('F')); ?></h2>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-md-4 offset-1 mt-2">
+                    <div class="col-md-4 offset-1">
                         <form action="<?php echo e(url('absen')); ?>" method="post">
                             <?php echo csrf_field(); ?>
                             <input type="hidden" name="user_id" value="<?php echo e(auth()->user()->id); ?>">
@@ -70,14 +70,24 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php $__currentLoopData = $absensi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <?php
+                                                $total_row = $absensi->count();
+                                            ?>
+
+                                            <?php if($total_row > 0): ?>
+                                                <?php $__currentLoopData = $absensi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <tr>
+                                                        <th><?php echo e($loop->iteration); ?>.</th>
+                                                        <td><?php echo e($item->tanggal); ?></td>
+                                                        <td><?php echo e($item->waktu); ?></td>
+                                                        <td><?php echo e($item->status); ?></td>
+                                                    </tr>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php else: ?>
                                                 <tr>
-                                                    <th><?php echo e($loop->iteration); ?>.</th>
-                                                    <td><?php echo e($item->tanggal); ?></td>
-                                                    <td><?php echo e($item->waktu); ?></td>
-                                                    <td><?php echo e($item->status); ?></td>
+                                                    <th class="text-center" colspan="4">Data tidak ditemukan</th>
                                                 </tr>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>

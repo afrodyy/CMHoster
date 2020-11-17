@@ -40,12 +40,7 @@
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-md-4 mt-2">
-                        <a href="{{ url('vps') }}" class="btn-icon btn btn-primary btn-round btn-sm">
-                            Tampilkan Semua Data
-                        </a>
-                    </div>
-                    <div class="col-md-4 offset-4">
+                    <div class="col-lg-4 offset-8">
                         <section id="search-bar">
                             <div class="search-bar right">
                                 <form action="{{ url('vps') }}" method="get">
@@ -60,14 +55,6 @@
                             </div>
                         </section>
                     </div>
-                    {{-- <div class="col-md-4">
-                        <section id="search-bar">
-                            <div class="search-bar right">
-                                <input type="text" name="search" autocomplete="off" id="search" class="form-control round"
-                                    placeholder="Search Customer Data" />
-                            </div>
-                        </section>
-                    </div> --}}
                 </div>
                 <!-- Table head options start -->
                 <div class="row" id="table-head">
@@ -98,13 +85,13 @@
                                                     <td>{{ $v->status }}</td>
                                                     <td>
                                                         <a href="{{ url('vps/' . $v->id . '/edit') }}"
-                                                            class="btn btn-info btn-sm">Ubah</a>
+                                                            class="btn btn-sm bg-gradient-info">Ubah</a>
                                                         <form action="{{ url('vps/' . $v->id . '/delete') }}" method="get"
                                                             class="d-inline"
                                                             onclick="return confirm('Data VPS dengan Nama VM {{ $v->nama }} akan dihapus?')">
                                                             @method('delete')
                                                             @csrf
-                                                            <button class="btn btn-danger btn-sm"
+                                                            <button class="btn btn-sm bg-gradient-danger"
                                                                 type="submit">Hapus</button>
                                                         </form>
                                                     </td>
