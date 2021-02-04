@@ -20,14 +20,21 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
+                            <?php if(session('success')): ?>
+                                <div class="alert alert-success">
+                                    <?php echo e(session('success')); ?>
+
+                                </div>
+                            <?php elseif(session('failed')): ?>
+                                <div class="alert alert-danger">
+                                    <?php echo e(session('failed')); ?>
+
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="col-12">
                             <h2 class="content-header-title float-left mb-0">Data Client CMHoster</h2>
                         </div>
-                        <?php if(session('success')): ?>
-                            <div class="alert alert-success mt-1">
-                                <?php echo e(session('success')); ?>
-
-                            </div>
-                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
@@ -121,7 +128,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="<?php echo e(url('/client/create')); ?>" method="post">
+                    <form action="<?php echo e(url('client/create')); ?>" method="post">
                         <?php echo csrf_field(); ?>
                         <div class="form-group">
                             <label for="">Nama</label>

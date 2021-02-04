@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    {{-- <div class="col-4">
                         <div class="card-deck-wrapper">
                             <div class="card-deck">
                                 <div class="card">
@@ -91,7 +91,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 @endif
             </div>

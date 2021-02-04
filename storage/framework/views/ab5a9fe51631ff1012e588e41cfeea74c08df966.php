@@ -19,15 +19,17 @@
             <div class="content-header row">
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
+                        <div class="col-8">
+                            <?php if(session('success')): ?>
+                                <div class="alert alert-success">
+                                    <?php echo e(session('success')); ?>
+
+                                </div>
+                            <?php endif; ?>
+                        </div>
                         <div class="col-12">
                             <h2 class="content-header-title float-left mb-0">Riwayat Cashbond Kamu</h2>
                         </div>
-                        <?php if(session('success')): ?>
-                            <div class="alert alert-success mt-1">
-                                <?php echo e(session('success')); ?>
-
-                            </div>
-                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
@@ -42,13 +44,6 @@
                 </div>
             </div>
             <div class="content-body">
-                <div class="row">
-                    <div class="col-md-4 mt-2">
-                        <a href="<?php echo e(url('cashbond')); ?>" class="btn-icon btn btn-primary btn-round btn-sm mb-1">
-                            Tampilkan Semua Data
-                        </a>
-                    </div>
-                </div>
                 <!-- Table head options start -->
                 <div class="row" id="table-head">
                     <div class="col-12">
@@ -74,8 +69,8 @@
                                                 <?php $__currentLoopData = $cashbond; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <tr>
                                                         <th><?php echo e($loop->iteration); ?>.</th>
-                                                        <td>Rp. <?php echo e(number_format($item->nominal)); ?></td>
-                                                        <td>Rp. <?php echo e(number_format($item->kredit)); ?></td>
+                                                        <td style="color: green">Rp. <?php echo e(number_format($item->nominal)); ?></td>
+                                                        <td style="color: red">Rp. <?php echo e(number_format($item->kredit)); ?></td>
                                                         <td><?php echo e($item->tanggal_pengajuan); ?></td>
                                                         <td><?php echo e($item->status); ?></td>
                                                         <td>

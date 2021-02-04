@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Client;
+use App\Models\Ip;
+use App\Models\Vps;
+use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
     public function index(Request $request)
     {
         $client = Client::all();
+
         return view('administrator.client.index', compact('client'));
     }
 
@@ -64,13 +68,27 @@ class ClientController extends Controller
 
     public function newClient(Request $request)
     {
-        $c = Client::create($request->all());
-        return redirect('/client')->with('success', 'Data Client Berhasil Diinput');
+        $email = DB::table('client')
+            ->select('email')
+            ->where('email', $request->email)
+            ->first();
+
+        if ($email === null) {
+            Client::create($request->all());
+
+            return redirect('client')->with('success', 'Data berhasil diinput');
+        } else {
+            $exist = $email->email;
+            if ($request->email === $exist) {
+                return redirect('client')->with('failed', 'Email yang diinput sudah ada dalam list!');
+            }
+        }
     }
 
     public function editClient($id)
     {
         $client = Client::findOrFail($id);
+
         return view('administrator.client.edit', compact('client'));
     }
 
@@ -79,13 +97,22 @@ class ClientController extends Controller
         $client = Client::findOrFail($id);
         $client->update($request->all());
         $client->save();
-        return redirect('client');
+
+        return redirect('client')->with('success', 'Data client berhasil diperbarui');
     }
 
     public function destroyClient($id)
     {
+        $vps = Vps::where('client_id', $id)->first();
+
+        $ip_id = $vps->ip_id;
+        $client_id = $vps->client_id;
+        Ip::where('id', $ip_id)->update(['status' => 'Belum digunakan']);
+        Vps::where('client_id', $client_id)->delete();
+
         $client = Client::findOrFail($id);
         $client->delete();
-        return redirect('/client')->with('success', 'Data Client Berhasil Dihapus');
+
+        return redirect('client')->with('success', 'Data Client Berhasil Dihapus');
     }
 }

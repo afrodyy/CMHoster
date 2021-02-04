@@ -17,38 +17,43 @@
         <div class="header-navbar-shadow"></div>
         <div class="content-wrapper">
             <div class="content-header row">
-                <div class="content-header-left col-md-9 col-12 mb-2">
-                    <div class="row breadcrumbs-top">
-                        <div class="col-12">
-                            <h2 class="content-header-title float-left mb-0">Data Cashbond Karyawan</h2>
-                        </div>
-                        <?php if(session('success')): ?>
-                            <div class="alert alert-success mt-1">
-                                <?php echo e(session('success')); ?>
+                <div class="col-6">
+                    <?php if(session('success')): ?>
+                        <div class="alert alert-success mt-1">
+                            <?php echo e(session('success')); ?>
 
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
-                    <div class="form-group breadcrum-right">
-                        <div class="dropdown">
-                            <button type="button" class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle"
-                                data-toggle="modal" data-target="#default">Pembayaran Cashbond
-                                <i class="feather icon-plus"></i>
-                            </button>
                         </div>
-                    </div>
+                    <?php endif; ?>
+                    <h2 class="content-header-title float-left mb-0">Data Cashbond Karyawan</h2>
+                </div>
+                <div class="col-3">
+                    <button type="button" class="btn btn-primary btn-round btn-sm float-right mt-1"
+                        data-toggle="modal" data-target="#default">Pembayaran Cashbond
+                        <i class="feather icon-plus"></i>
+                    </button>
+                </div>
+                <div class="col-3">
+                    <section id="search-bar">
+                        <div class="search-bar right">
+                            <form action="<?php echo e(url('cashbondAjax')); ?>" method="get">
+                                <div class="form-group">
+                                    <select name="user_id" id="cashbondFilter" class="form-control" required>
+                                        <option value="">-- Pilih Karyawan --</option>
+                                        <?php $__currentLoopData = $user; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($item->id); ?>"><?php echo e($item->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
                 </div>
             </div>
+
+            
+
             <div class="content-body">
-                <div class="row">
-                    <div class="col-md-4 mb-2">
-                        <a href="<?php echo e(url('admin/cashbond')); ?>" class="btn-icon btn btn-primary btn-round btn-sm">
-                            Tampilkan Semua Data
-                        </a>
-                    </div>
-                </div>
+                
                 <!-- Table head options start -->
                 <div class="row" id="table-head">
                     <div class="col-12">
@@ -145,4 +150,32 @@
     </div>
 <?php $__env->stopSection(); ?>
 
+<?php $__env->startSection('javascript'); ?>
+    <script>
+        $(document).ready(function() {
+
+            fetch_cashbond_data();
+
+            function fetch_cashbond_data(query = '') {
+                $.ajax({
+                    url: "<?php echo e(route('cashbondAjax')); ?>",
+                    method: "GET",
+                    data: {
+                        query: query
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('tbody').html(data.table_data);
+                    }
+                });
+            }
+
+            $(document).on('input', '#cashbondFilter', function() {
+                var query = $(this).val();
+                fetch_cashbond_data(query);
+            });
+        });
+
+    </script>
+<?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\noc\resources\views/administrator/cashbond.blade.php ENDPATH**/ ?>

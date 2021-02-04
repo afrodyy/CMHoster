@@ -9,5 +9,15 @@ class Location extends Model
 {
     use HasFactory;
     protected $table = 'location';
-    protected $fillable = ['nama', 'lokasi', 'tanggal', 'hdd', 'memori'];
+    protected $fillable = ['nama', 'tanggal', 'spesifikasi', 'datacenter_id'];
+
+    public function datacenter()
+    {
+        return $this->belongsTo(Datacenter::class);
+    }
+
+    public function vps()
+    {
+        return $this->hasMany(Vps::class);
+    }
 }

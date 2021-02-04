@@ -66,21 +66,11 @@
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="col-12">
-                                            <a href="app-user-edit.html" class="btn btn-primary mr-1"><i
-                                                    class="feather icon-edit-1"></i> Edit</a>
-                                            <button class="btn btn-outline-danger"><i class="feather icon-trash-2"></i>
-                                                Delete</button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- account end -->
-
-                        <!-- cashbond start -->
-                        
-                        <!-- cashbond end -->
 
                         <!-- cashbond start -->
                         <div class="col-12">
@@ -91,7 +81,7 @@
                                     </div>
                                     <div class="col-4">
                                         <form action="<?php echo e(route('cashbondByMonth')); ?>" method="get">
-                                            <select name="search" id="search" class="form-control">
+                                            <select name="tanggal_pengajuan" id="search" class="form-control">
                                                 <option value="">-- Pilih Bulan --</option>
                                                 <option value="01">Januari</option>
                                                 <option value="02">Februari</option>
@@ -121,19 +111,23 @@
                                                     <th scope="col">Sisa Kasbon</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <?php $sum_debit = 0; ?>
-                                                <?php $sum_kredit = 0; ?>
+                                            <tbody id="cashbond">
+                                                <?php
+                                                    $sum_debit = 0;
+                                                    $sum_kredit = 0;
+                                                ?>
                                                 <?php $__currentLoopData = $cashbond; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <tr>
                                                         <th><?php echo e($loop->iteration); ?>.</th>
                                                         <td><?php echo e($item->tanggal_pengajuan); ?></td>
-                                                        <td>Rp. <?php echo e(number_format($item->nominal)); ?></td>
-                                                        <td>Rp. <?php echo e(number_format($item->kredit)); ?></td>
+                                                        <td style="color: green">Rp. <?php echo e(number_format($item->nominal)); ?></td>
+                                                        <td style="color: red">Rp. <?php echo e(number_format($item->kredit)); ?></td>
                                                         <td>-</td>
                                                     </tr>
-                                                    <?php $sum_debit += $item->nominal ?>
-                                                    <?php $sum_kredit += $item->kredit ?>
+                                                    <?php
+                                                        $sum_debit += $item->nominal;
+                                                        $sum_kredit += $item->kredit;
+                                                    ?>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </tbody>
                                             <tfoot>
@@ -161,20 +155,64 @@
                             <div class="card">
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <h2>Absensi</h2>
-                                        <p class="card-text">Total Absensi : <span class="badge badge-pill bg-info"><?php echo e($tepatWaktu + $telat); ?></span></p>
+                                        <h2 id="month">Absensi</h2>
+                                        <?php
+                                            $date = date('n');
+                                        ?>
+                                        <form action="<?php echo e(route('attendanceByMonth')); ?>" method="get">
+                                            <select name="tanggal" id="attendanceFilter" class="form-control">
+                                                <option value="">-- Pilih Bulan --</option>
+                                                <option value="01" <?php if($date === '01'): ?>
+                                                    selected
+                                                <?php endif; ?>>Januari</option>
+                                                <option value="02" <?php if($date === '02'): ?>
+                                                    selected
+                                                <?php endif; ?>>Februari</option>
+                                                <option value="03" <?php if($date === '03'): ?>
+                                                    selected
+                                                <?php endif; ?>>Maret</option>
+                                                <option value="04" <?php if($date === '04'): ?>
+                                                    selected
+                                                <?php endif; ?>>April</option>
+                                                <option value="05" <?php if($date === '05'): ?>
+                                                    selected
+                                                <?php endif; ?>>Mei</option>
+                                                <option value="06" <?php if($date === '06'): ?>
+                                                    selected
+                                                <?php endif; ?>>Juni</option>
+                                                <option value="07" <?php if($date === '07'): ?>
+                                                    selected
+                                                <?php endif; ?>>Juli</option>
+                                                <option value="08" <?php if($date === '08'): ?>
+                                                    selected
+                                                <?php endif; ?>>Agustus</option>
+                                                <option value="09" <?php if($date === '09'): ?>
+                                                    selected
+                                                <?php endif; ?>>September</option>
+                                                <option value="10" <?php if($date === '10'): ?>
+                                                    selected
+                                                <?php endif; ?>>Oktober</option>
+                                                <option value="11" <?php if($date === '11'): ?>
+                                                    selected
+                                                <?php endif; ?>>November</option>
+                                                <option value="12" <?php if($date === '12'): ?>
+                                                    selected
+                                                <?php endif; ?>>Desember</option>
+                                            </select>
+                                        </form>
+                                        <p class="card-text mt-1">Total Absensi : <span class="badge badge-pill bg-info" id="total_absen"><?php echo e($tepatWaktu + $telat); ?></span></p>
                                     </div>
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item">
-                                            <span class="badge badge-pill bg-success float-right"><?php echo e($tepatWaktu); ?></span>
+                                            <span class="badge badge-pill bg-success float-right" id="total_tepat"><?php echo e($tepatWaktu); ?></span>
                                             Tepat Waktu
                                         </li>
                                         <li class="list-group-item">
-                                            <span class="badge badge-pill bg-warning float-right"><?php echo e($telat); ?></span>
+                                            <span class="badge badge-pill bg-warning float-right" id="total_telat"><?php echo e($telat); ?></span>
                                             Telat
                                         </li>
                                         <li class="list-group-item">
-                                            <span class="badge badge-pill bg-danger float-right"><?php echo e($tidakMasuk); ?></span>
+                                            <span class="badge badge-pill bg-danger float-right" id="total_tidakmasuk"><?php echo e($tidakMasuk); ?></span>
                                             Tidak Masuk
                                         </li>
                                     </ul>
@@ -196,7 +234,7 @@
                                                     <th scope="col">Status</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="absen">
                                                 <?php $__currentLoopData = $absensi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <tr>
                                                         <th><?php echo e($loop->iteration); ?>.</th>
@@ -210,6 +248,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <input type="hidden" value="<?php echo e($id); ?>" id="user_id">
                         </div>
                         
                     </div>
@@ -226,18 +265,21 @@
     <script>
         $(document).ready(function() {
 
-            fetch_vps_data();
+            var user_id = $('#user_id').val();
 
-            function fetch_vps_data(query = '') {
+            fetch_cashbond_data();
+
+            function fetch_cashbond_data(query = '') {
                 $.ajax({
                     url: "<?php echo e(route('cashbondByMonth')); ?>",
-                    method: 'GET',
+                    method: "GET",
                     data: {
-                        query: query
+                        query: query,
+                        user_id: user_id
                     },
                     dataType: 'json',
                     success: function(data) {
-                        $('tbody').html(data.table_data);
+                        $('#cashbond').html(data.table_data);
                         $('#total_records').text(data.total_data);
                     }
                 });
@@ -245,7 +287,34 @@
 
             $(document).on('input', '#search', function() {
                 var query = $(this).val();
-                fetch_vps_data(query);
+                fetch_cashbond_data(query);
+            });
+
+            fetch_attendance_data();
+
+            function fetch_attendance_data(query = '') {
+                $.ajax({
+                    url: "<?php echo e(route('attendanceByMonth')); ?>",
+                    method: "GET",
+                    data: {
+                        query: query,
+                        user_id: user_id
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#absen').html(data.table_data);
+                        $('#total_records').text(data.total_data);
+                        $('#total_tepat').text(data.total_tepat);
+                        $('#total_telat').text(data.total_telat);
+                        $('#total_tidakmasuk').text(data.total_tidakmasuk);
+                        $('#total_absen').text(data.total_absen);
+                    }
+                });
+            }
+
+            $(document).on('input', '#attendanceFilter', function() {
+                var query = $(this).val();
+                fetch_attendance_data(query);
             });
         });
 

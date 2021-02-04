@@ -242,7 +242,7 @@
                     </a>
                 </li>
                 <?php $role = auth()->user()->role; ?>
-                <?php if($role === 'owner' || $role === 'noc'): ?>
+                <?php if($role == 'owner' || $role == 'noc' || $role == 'master'): ?>
                     <li class="navigation-header"><span>Network Operating Center</span></li>
                     
                     <li class="nav-item has-sub"><a href="#"><i class="feather icon-user"></i><span class="menu-title"
@@ -250,29 +250,26 @@
                         <ul class="menu-content" style="">
                             <li class="is-shown <?php echo $__env->yieldContent('server'); ?>"><a href="<?php echo e(url('vps')); ?>"><i
                                         class="feather icon-circle"></i><span class="menu-item"
-                                        data-i18n="Shop">Server</span></a>
+                                        data-i18n="Shop">VPS</span></a>
                             </li>
                             <li class="is-shown <?php echo $__env->yieldContent('client'); ?>"><a href="<?php echo e(url('client')); ?>"><i
                                         class="feather icon-circle"></i><span class="menu-item"
                                         data-i18n="Shop">Client</span></a>
                             </li>
-                            <li class="is-shown <?php echo $__env->yieldContent('location'); ?>"><a href="<?php echo e(url('location')); ?>"><i class="feather icon-circle"></i><span class="menu-item"
-                                        data-i18n="Details">Locations</span></a>
-                            </li>
-                            <li class="is-shown"><a href="#"><i class="feather icon-circle"></i><span class="menu-item"
-                                        data-i18n="Wish List">Access</span></a>
-                            </li>
-                            <li class="is-shown"><a href="#"><i class="feather icon-circle"></i><span class="menu-item"
-                                        data-i18n="Checkout">Divisions</span></a>
-                            </li>
                             <li class="is-shown <?php echo $__env->yieldContent('ip'); ?>"><a href="<?php echo e(url('master_ip')); ?>"><i
                                         class="feather icon-circle"></i><span class="menu-item" data-i18n="Checkout">IP
                                         Addresses</span></a>
+                            <li class="is-shown <?php echo $__env->yieldContent('location'); ?>"><a href="<?php echo e(url('location')); ?>"><i class="feather icon-circle"></i><span class="menu-item"
+                                        data-i18n="Details">Server</span></a>
+                            </li>
+                            <li class="is-shown <?php echo $__env->yieldContent('data-center'); ?>"><a href="<?php echo e(url('data-center')); ?>"><i class="feather icon-circle"></i><span class="menu-item"
+                                        data-i18n="Wish List">Data Center</span></a>
+                            </li>
                             </li>
                         </ul>
                     </li>
                 <?php endif; ?>
-                <?php if($role === 'admin' || $role === 'owner'): ?>
+                <?php if($role == 'admin' || $role == 'owner' || $role == 'master'): ?>
                     <li class="navigation-header"><span>Admin</span></li>
                     <li class=" nav-item <?php echo $__env->yieldContent('admin.cashbond'); ?>">
                         <a href="<?php echo e(url('admin/cashbond')); ?>">
@@ -286,6 +283,7 @@
                             <span class="menu-title" data-i18n="Data Karyawan">Data Karyawan</span>
                         </a>
                     </li>
+                    
                 <?php endif; ?>
                 <?php if($role != 'owner'): ?>
                     <li class="navigation-header"><span>Karyawan</span></li>
@@ -343,14 +341,13 @@
     
 
     <script src="<?php echo e(URL::asset('app-assets/js/scripts/components.js')); ?>"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
     
     <!-- END: Page JS-->
     <?php echo $__env->yieldContent('javascript'); ?>
+    <?php echo $__env->yieldContent('jquery'); ?>
 
 </body>
 <!-- END: Body-->

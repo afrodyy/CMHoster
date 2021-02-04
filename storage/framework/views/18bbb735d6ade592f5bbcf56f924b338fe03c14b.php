@@ -17,7 +17,7 @@
         <div class="header-navbar-shadow"></div>
         <div class="content-wrapper">
             <div class="content-header row">
-                <div class="content-header-left col-md-9 col-12 mb-2">
+                <div class="content-header-left col-9 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
                             <h2 class="content-header-title float-left mb-0">Data Karyawan CMHoster</h2>
@@ -30,12 +30,13 @@
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
-                    <div class="form-group breadcrum-right">
-                        <div class="dropdown">
-                            <button type="button" class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle"
-                                data-toggle="modal" data-target="#default">
-                                Input Karyawan Alfa
+                <div class="content-header-right col-3 mb-2">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary float-right" data-toggle="modal"
+                                data-target="#exampleModal">
+                                Add User
                             </button>
                         </div>
                     </div>
@@ -89,51 +90,56 @@
     <!-- END: Content-->
 
     <!-- Modal -->
-    <div class="modal fade text-left" id="default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel1">Input Absen</h4>
+                    <h5 class="modal-title" id="exampleModalLabel">Add User Form</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="<?php echo e(url('admin/absen')); ?>" method="post">
+                    <form action="<?php echo e(url('admin/add_user')); ?>" method="post">
                         <?php echo csrf_field(); ?>
                         <div class="form-group">
-                            <label for="">Nama Karyawan</label>
-                            <select name="user_id" class="form-control" required>
-                                <option value="">-- Pilih Karyawan --</option>
-                                <option value="2">Ahmad Dicky Zulfikar</option>
-                                <option value="3">Fahmi Imam</option>
-                                <option value="6">Faqy Iskandar</option>
-                                <option value="1">Herdian Afrody</option>
-                                <option value="5">Muhammad Alviansyah</option>
-                                <option value="7">Roni Abdul Hamid</option>
+                            <label for="name">Full Name</label>
+                            <input type="text" name="name" id="name" class="form-control" autocomplete="off" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" id="username" class="form-control" autocomplete="off"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                            <select name="role" id="role" class="form-control" required>
+                                <option value="">-- Select role --</option>
+                                <option value="user">User</option>
+                                <option value="noc">Noc</option>
+                                <option value="admin">Admin</option>
+                                <option value="owner">Owner</option>
+                                <option value="master">Master</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <?php $date = date('d-m-Y'); ?>
-                            <label for="">Tanggal</label>
-                            <input type="text" name="tanggal" class="form-control" value="<?php echo e($date); ?>" readonly>
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" autocomplete="off" required>
                         </div>
+                        <?php
+                            $password = bcrypt('password');
+                        ?>
                         <div class="form-group">
-                            <?php $waktu = date('H:i:s'); ?>
-                            <label for="">Waktu</label>
-                            <input type="text" name="waktu" class="form-control" value="<?php echo e($waktu); ?>" readonly>
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password" class="form-control" value="<?php echo e($password); ?>"
+                                readonly>
                         </div>
-                        <div class="form-group">
-                            <label for="">Status</label>
-                            <input type="text" name="status" class="form-control" value="Tidak Masuk" readonly>
-                        </div>
-                </div>
+                    </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" name="button">Simpan</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
-                </form>
+            </form>
             </div>
         </div>
     </div>

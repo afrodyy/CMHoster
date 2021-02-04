@@ -77,7 +77,9 @@
                                                                 <select name="client_id" class="form-control" required>
                                                                     <option value="">-- Pilih Client --</option>
                                                                     <?php $__currentLoopData = $client; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                        <option value="<?php echo e($c->id); ?>"><?php echo e($c->nama); ?></option>
+                                                                        <option value="<?php echo e($c->id); ?>" <?php if($c->id === $vps->client_id): ?>
+                                                                            selected
+                                                                        <?php endif; ?>><?php echo e($c->nama); ?></option>
                                                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 </select>
                                                                 <div class="form-control-position">
@@ -90,27 +92,31 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">IP Address</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon"
-                                                                    class="form-control" name="ip_address"
-                                                                    value="<?php echo e($vps->ip_address); ?>" placeholder="IP Address">
+                                                                <select name="ip_id" class="form-control" required>
+                                                                    <option value="">-- Pilih IP Address --</option>
+                                                                        <?php $__currentLoopData = $ip; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <option value="<?php echo e($i->id); ?>" <?php if($i->id === $vps->ip_id): ?>
+                                                                                selected
+                                                                            <?php endif; ?>><?php echo e($i->ip_address); ?></option>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                </select>
                                                                 <div class="form-control-position">
-                                                                    <i class="feather icon-smartphone"></i>
+                                                                    <i class="feather icon-cloud"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="form-group">
-                                                            <label for="contact-info-icon">Lokasi Server</label>
+                                                            <label for="contact-info-icon">Nama Server</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <select name="lokasi" id="" class="form-control" required>
+                                                                <select name="location_id" id="location_id" class="form-control" required>
                                                                     <option value="">-- Pilih Lokasi Server --</option>
-                                                                    <option value="S3" <?php if($vps->lokasi == 'S3'): ?>
-                                                                        selected
-                                                                        <?php endif; ?>>S3</option>
-                                                                    <option value="S4" <?php if($vps->lokasi == 'S4'): ?>
-                                                                        selected
-                                                                        <?php endif; ?>>S4</option>
+                                                                    <?php $__currentLoopData = $location; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $l): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <option value="<?php echo e($l->id); ?>" <?php if($l->id === $vps->location_id): ?>
+                                                                            selected
+                                                                        <?php endif; ?>><?php echo e($l->nama); ?></option>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 </select>
                                                                 <div class="form-control-position">
                                                                     <i class="feather icon-smartphone"></i>
@@ -163,7 +169,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="<?php echo e(url('server')); ?>" class="btn btn-info">Kembali</a>
+                            <a href="<?php echo e(url('vps')); ?>" class="btn btn-info">Kembali</a>
                         </div>
                     </div>
                 </section>

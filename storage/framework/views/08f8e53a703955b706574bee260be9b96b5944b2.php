@@ -22,12 +22,6 @@
                         <div class="col-12">
                             <h2 class="content-header-title float-left mb-0">Data VPS CMHoster</h2>
                         </div>
-                        <?php if(session('success')): ?>
-                            <div class="alert alert-success mt-1">
-                                <?php echo e(session('success')); ?>
-
-                            </div>
-                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
@@ -43,7 +37,20 @@
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-lg-4 offset-8">
+                    <div class="col-8">
+                        <?php if(session('success')): ?>
+                            <div class="alert alert-success">
+                                <?php echo e(session('success')); ?>
+
+                            </div>
+                        <?php elseif(session('failed')): ?>
+                            <div class="alert alert-danger">
+                                <?php echo e(session('failed')); ?>
+
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="col-4">
                         <section id="search-bar">
                             <div class="search-bar right">
                                 <form action="<?php echo e(url('vps')); ?>" method="get">
@@ -72,19 +79,24 @@
                                                 <th scope="col">Nama VM</th>
                                                 <th scope="col">Client</th>
                                                 <th scope="col">IP Address</th>
-                                                <th scope="col">Lokasi Server</th>
+                                                <th scope="col">Nama Server</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php $__currentLoopData = $vps; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <?php
+                                            if (!isset($v->location->nama)) {
+                                                $v->location->nama = 'Tidak ada';
+                                            }
+                                            ?>
                                                 <tr>
                                                     <th scope="row"><?php echo e($loop->iteration); ?>.</th>
                                                     <td><?php echo e($v->nama); ?></td>
                                                     <td><?php echo e($v->client->nama); ?></td>
-                                                    <td><?php echo e($v->ip_address); ?></td>
-                                                    <td><?php echo e($v->lokasi); ?></td>
+                                                    <td><?php echo e($v->ip->ip_address); ?></td>
+                                                    <td><?php echo e($v->location->nama); ?></td>
                                                     <td><?php echo e($v->status); ?></td>
                                                     <td>
                                                         <a href="<?php echo e(url('vps/' . $v->id . '/edit')); ?>"
@@ -128,6 +140,10 @@
                     <form action="<?php echo e(url('vps/create')); ?>" method="post">
                         <?php echo csrf_field(); ?>
                         <div class="form-group">
+                            <label for="">Nama VM</label>
+                            <input type="text" name="nama" class="form-control" placeholder="Nama VM" required>
+                        </div>
+                        <div class="form-group">
                             <label for="">Nama Client</label>
                             <select name="client_id" class="form-control" required>
                                 <option value="">-- Pilih Client --</option>
@@ -137,19 +153,23 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="">Nama VM</label>
-                            <input type="text" name="nama" class="form-control" placeholder="Nama VM" required>
-                        </div>
-                        <div class="form-group">
                             <label for="">IP Address</label>
-                            <input type="text" name="ip_address" class="form-control" placeholder="IP Address" required>
+                            <select name="ip_id" id="ip_id" class="form-control" required>
+                                <option value="">-- Pilih IP Address --</option>
+                                <?php $__currentLoopData = $ip; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php if($i->status !== 'Sudah digunakan'): ?>
+                                        <option value="<?php echo e($i->id); ?>"><?php echo e($i->ip_address); ?></option>
+                                    <?php endif; ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="">Lokasi Server</label>
-                            <select name="lokasi" id="" class="form-control" required>
+                            <label for="">Nama Server</label>
+                            <select name="location_id" id="location_id" class="form-control" required>
                                 <option value="">-- Pilih Lokasi Server --</option>
-                                <option value="S3">S3</option>
-                                <option value="S4">S4</option>
+                                <?php $__currentLoopData = $location; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $l): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($l->id); ?>"><?php echo e($l->nama); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
                         </div>
                         <div class="form-group">

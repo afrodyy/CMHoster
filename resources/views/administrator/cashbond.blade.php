@@ -15,16 +15,49 @@
         <div class="header-navbar-shadow"></div>
         <div class="content-wrapper">
             <div class="content-header row">
+                <div class="col-6">
+                    @if (session('success'))
+                        <div class="alert alert-success mt-1">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <h2 class="content-header-title float-left mb-0">Data Cashbond Karyawan</h2>
+                </div>
+                <div class="col-3">
+                    <button type="button" class="btn btn-primary btn-round btn-sm float-right mt-1"
+                        data-toggle="modal" data-target="#default">Pembayaran Cashbond
+                        <i class="feather icon-plus"></i>
+                    </button>
+                </div>
+                <div class="col-3">
+                    <section id="search-bar">
+                        <div class="search-bar right">
+                            <form action="{{ url('cashbondAjax') }}" method="get">
+                                <div class="form-group">
+                                    <select name="user_id" id="cashbondFilter" class="form-control" required>
+                                        <option value="">-- Pilih Karyawan --</option>
+                                        @foreach ($user as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            {{-- <div class="content-header row">
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
+                            @if (session('success'))
+                                <div class="alert alert-success mt-1">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
                             <h2 class="content-header-title float-left mb-0">Data Cashbond Karyawan</h2>
                         </div>
-                        @if (session('success'))
-                            <div class="alert alert-success mt-1">
-                                {{ session('success') }}
-                            </div>
-                        @endif
                     </div>
                 </div>
                 <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
@@ -37,15 +70,27 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
+
             <div class="content-body">
-                <div class="row">
-                    <div class="col-md-4 mb-2">
-                        <a href="{{ url('admin/cashbond') }}" class="btn-icon btn btn-primary btn-round btn-sm">
-                            Tampilkan Semua Data
-                        </a>
+                {{-- <div class="row">
+                    <div class="col-lg-4 offset-8">
+                        <section id="search-bar">
+                            <div class="search-bar right">
+                                <form action="{{ url('cashbondAjax') }}" method="get">
+                                    <div class="form-group">
+                                        <select name="user_id" id="cashbondFilter" class="form-control" required>
+                                            <option value="">-- Pilih Karyawan --</option>
+                                            @foreach ($user as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
                     </div>
-                </div>
+                </div> --}}
                 <!-- Table head options start -->
                 <div class="row" id="table-head">
                     <div class="col-12">
@@ -140,4 +185,33 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascript')
+    <script>
+        $(document).ready(function() {
+
+            fetch_cashbond_data();
+
+            function fetch_cashbond_data(query = '') {
+                $.ajax({
+                    url: "{{ route('cashbondAjax') }}",
+                    method: "GET",
+                    data: {
+                        query: query
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('tbody').html(data.table_data);
+                    }
+                });
+            }
+
+            $(document).on('input', '#cashbondFilter', function() {
+                var query = $(this).val();
+                fetch_cashbond_data(query);
+            });
+        });
+
+    </script>
 @endsection

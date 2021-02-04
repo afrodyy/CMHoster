@@ -22,12 +22,6 @@
                         <div class="col-12">
                             <h2 class="content-header-title float-left mb-0">IP Addresses</h2>
                         </div>
-                        <?php if(session('success')): ?>
-                            <div class="alert alert-success mt-1">
-                                <?php echo e(session('success')); ?>
-
-                            </div>
-                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
@@ -43,7 +37,20 @@
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-lg-4 offset-8">
+                    <div class="col-8">
+                        <?php if(session('success')): ?>
+                            <div class="alert alert-success">
+                                <?php echo e(session('success')); ?>
+
+                            </div>
+                        <?php elseif(session('failed')): ?>
+                            <div class="alert alert-danger">
+                                <?php echo e(session('failed')); ?>
+
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="col-4">
                         <section id="search-bar">
                             <div class="search-bar right">
                                 <form action="<?php echo e(url('master_ip')); ?>" method="get">

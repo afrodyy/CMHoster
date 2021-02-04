@@ -55,44 +55,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="card-deck-wrapper">
-                            <div class="card-deck">
-                                <div class="card">
-                                    <div class="card-content">
-                                        <img src="../../../app-assets/images/slider/05.jpg" alt="Card image cap" class="card-img-top img-fluid">
-                                        <div class="card-body">
-                                            <?php if($debit === 0): ?>
-                                                <h4 class="card-title">Kamu,</h4>
-                                                <p class="card-text">
-                                                    <strong>Lagi ga ada kasbon.</strong>
-                                                </p>
-                                                <a href="<?php echo e(url('cashbond')); ?>" class="btn btn-outline-primary waves-effect waves-light">Detail</a>
-                                            <?php else: ?>
-                                                <?php
-                                                    $sum_debit = 0;
-                                                    $sum_kredit = 0;
-                                                ?>
-                                                <?php $__currentLoopData = $cashbond; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <?php
-                                                        $debit = $item->nominal;
-                                                        $kredit = $item->kredit;
-                                                        $sum_debit += $debit;
-                                                        $sum_kredit += $kredit;
-                                                    ?>
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                <h4 class="card-title">Kamu,</h4>
-                                                <p class="card-text">
-                                                    <strong>Punya kasbon sebesar Rp. <?php echo e(number_format($sum_debit - $sum_kredit)); ?></strong>
-                                                </p>
-                                                <a href="<?php echo e(url('cashbond')); ?>" class="btn btn-outline-primary waves-effect waves-light">Detail</a>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
                 <?php endif; ?>
             </div>

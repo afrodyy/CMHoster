@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Location;
+use App\Models\Datacenter;
+use App\Models\Ip;
+use App\Models\Vps;
+use Illuminate\Support\Facades\DB;
 
 class LocationController extends Controller
 {
     public function index()
     {
         $location = Location::all();
-        return view('location.index', compact('location'));
+        $datacenter = Datacenter::all();
+
+        return view('location.index', compact('location', 'datacenter'));
     }
 
     function search(Request $request)
@@ -34,13 +40,12 @@ class LocationController extends Controller
                         <tr>
                             <th>' . $number . '.' . '</th>
                             <td>' . $row->nama . '</td>
-                            <td>' . $row->lokasi . '</td>
+                            <td>' . $row->datacenter->lokasi . '</td>
                             <td>' . $row->tanggal . '</td>
-                            <td>' . $row->hdd . '</td>
-                            <td>' . $row->memori . '</td>
+                            <td>' . $row->spesifikasi . '</td>
                             <td>' .
-                        '<a href="location/' . $row->id . '/ubah" class="btn btn-sm bg-gradient-info">Ubah</a>' .
-                        '<a href="location/' . $row->id . '/hapus" method="get" class="btn btn-sm bg-gradient-danger ml-1" onclick="return confirm' . ("Data VPS dengan Nama VM . $row->nama . akan dihapus?") . '">Hapus</a>'
+                        '<a href="location/' . $row->id . '/edit" class="btn btn-sm bg-gradient-info">Ubah</a>' .
+                        '<a href="location/' . $row->id . '/delete" method="get" class="btn btn-sm bg-gradient-danger ml-1" onclick="return confirm' . ("Data VPS dengan Nama VM . $row->nama . akan dihapus?") . '">Hapus</a>'
                         . '</td>
                         </tr>
                         ';
@@ -48,7 +53,7 @@ class LocationController extends Controller
             } else {
                 $output = '
                     <tr>
-                        <td align="center" colspan="7">Data tidak ditemukan</td>
+                        <td align="center" colspan="6">Data tidak ditemukan</td>
                     </tr>
                 ';
             }
@@ -62,12 +67,52 @@ class LocationController extends Controller
 
     public function input(Request $request)
     {
-        $location = Location::create($request->all());
-        return redirect('location')->with('success', 'Data berhasil diinput');
+        $nama = DB::table('location')
+            ->select('nama')
+            ->where('nama', $request->nama)
+            ->first();
+
+        if ($nama === null) {
+            Location::create($request->all());
+            return redirect('location')->with('success', 'Data berhasil diinput');
+        } else {
+            $namaServer = $nama->nama;
+            if ($request->nama === $namaServer) {
+                return redirect('location')->with('failed', 'Nama Server yang diinput sudah ada dalam list!');
+            }
+        }
     }
 
-    public function hapus($id)
+    public function edit($id)
     {
+        $location = Location::findOrFail($id);
+        $datacenter = Datacenter::all();
+
+        return view('location.edit', compact('location', 'datacenter'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $location = Location::findOrFail($id);
+        $location->update($request->all());
+        $location->save();
+
+        return redirect('location')->with('success', 'Data Server berhasil diperbaharui!');
+    }
+
+    public function destroy($id)
+    {
+        $ip_id = DB::table('vps')
+            ->select('ip_id')
+            ->where('location_id', $id)
+            ->first();
+        $ip = $ip_id->ip_id;
+
+        Ip::where('id', $ip)->update(['status' => 'Belum digunakan']);
+
+        $vps = Vps::where('location_id', $id);
+        $vps->delete();
+
         $location = Location::findOrFail($id);
         $location->delete();
 

@@ -18,15 +18,8 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-left mb-0">Lokasi Server</h2>
+                            <h2 class="content-header-title float-left mb-0">Data Server</h2>
                         </div>
-                        @if (session('success'))
-                            <div class="col-6">
-                                <div class="alert alert-success mt-1">
-                                    {{ session('success') }}
-                                </div>
-                            </div>
-                        @endif
                     </div>
                 </div>
                 <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
@@ -41,21 +34,33 @@
                 </div>
             </div>
             <div class="content-body">
-
-                <div class="col-md-4 offset-8">
-                    <section id="search-bar">
-                        <div class="search-bar right">
-                            <form action="{{ url('location/search') }}" method="get">
-                                <fieldset class="form-group position-relative has-icon-left">
-                                    <input type="text" name="search" autocomplete="off" class="form-control round"
-                                        id="search" placeholder="Cari data server">
-                                    <div class="form-control-position">
-                                        <i class="feather icon-search px-1"></i>
-                                    </div>
-                                </fieldset>
-                            </form>
-                        </div>
-                    </section>
+                <div class="row">
+                    <div class="col-8">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @elseif (session('failed'))
+                            <div class="alert alert-danger">
+                                {{ session('failed') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-4">
+                        <section id="search-bar">
+                            <div class="search-bar right">
+                                <form action="{{ url('location/search') }}" method="get">
+                                    <fieldset class="form-group position-relative has-icon-left">
+                                        <input type="text" name="search" autocomplete="off" class="form-control round"
+                                            id="search" placeholder="Cari data server">
+                                        <div class="form-control-position">
+                                            <i class="feather icon-search px-1"></i>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </section>
+                    </div>
                 </div>
 
                 <!-- Table head options start -->
@@ -71,8 +76,7 @@
                                                 <th scope="col">Nama Server</th>
                                                 <th scope="col">Lokasi Data Center</th>
                                                 <th scope="col">Tanggal Pembelian</th>
-                                                <th scope="col">HDD</th>
-                                                <th scope="col">Memori</th>
+                                                <th scope="col">Spesifikasi</th>
                                                 <th scope="col">Aksi</th>
                                             </tr>
                                         </thead>
@@ -81,10 +85,9 @@
                                             <tr>
                                                 <th>{{ $loop->iteration }}.</th>
                                                 <td>{{ $item->nama }}</td>
-                                                <td>{{ $item->lokasi }}</td>
+                                                <td>{{ $item->datacenter->lokasi }}</td>
                                                 <td>{{ $item->tanggal }}</td>
-                                                <td>{{ $item->hdd }}</td>
-                                                <td>{{ $item->memori }}</td>
+                                                <td>{{ $item->spesifikasi }}</td>
                                                 <td>
                                                     <a href="{{ url('location/' . $item->id . '/hapus') }}" class="btn btn-sm bg-gradient-danger" onclick="return confirm('Yakin ingin hapus data?')">Hapus</a>
                                                 </td>
@@ -122,10 +125,11 @@
                         </div>
                         <div class="form-group">
                             <label for="lokasi">Lokasi Data Center</label>
-                            <select name="lokasi" id="lokasi" class="form-control" required>
+                            <select name="datacenter_id" id="datacenter_id" class="form-control" required>
                                 <option value="">-- Pilih Lokasi --</option>
-                                <option value="S3">S3</option>
-                                <option value="S4">S4</option>
+                                @foreach ($datacenter as $d)
+                                    <option value="{{ $d->id }}">{{ $d->lokasi }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
@@ -133,12 +137,8 @@
                             <input type="text" name="tanggal" id="tanggal" class="form-control" required autocomplete="off">
                         </div>
                         <div class="form-group">
-                            <label for="hdd">Spesifikasi Hardisk</label>
-                            <input type="text" name="hdd" id="hdd" class="form-control" required autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <label for="memori">Spesifikasi Memori</label>
-                            <input type="text" name="memori" id="memori" class="form-control" required autocomplete="off">
+                            <label for="spesifikasi">Spesifikasi</label>
+                            <textarea name="spesifikasi" id="spesifikasi" class="form-control" cols="15" rows="5"></textarea>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -188,4 +188,9 @@
         });
 
     </script>
+@endsection
+
+@section('jquery')
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 @endsection

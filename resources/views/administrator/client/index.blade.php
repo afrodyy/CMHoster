@@ -18,13 +18,19 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @elseif (session('failed'))
+                                <div class="alert alert-danger">
+                                    {{ session('failed') }}
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-12">
                             <h2 class="content-header-title float-left mb-0">Data Client CMHoster</h2>
                         </div>
-                        @if (session('success'))
-                            <div class="alert alert-success mt-1">
-                                {{ session('success') }}
-                            </div>
-                        @endif
                     </div>
                 </div>
                 <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
@@ -118,7 +124,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url('/client/create') }}" method="post">
+                    <form action="{{ url('client/create') }}" method="post">
                         @csrf
                         <div class="form-group">
                             <label for="">Nama</label>

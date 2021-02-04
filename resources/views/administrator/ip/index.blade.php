@@ -20,11 +20,6 @@
                         <div class="col-12">
                             <h2 class="content-header-title float-left mb-0">IP Addresses</h2>
                         </div>
-                        @if (session('success'))
-                            <div class="alert alert-success mt-1">
-                                {{ session('success') }}
-                            </div>
-                        @endif
                     </div>
                 </div>
                 <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
@@ -40,7 +35,18 @@
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-lg-4 offset-8">
+                    <div class="col-8">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @elseif (session('failed'))
+                            <div class="alert alert-danger">
+                                {{ session('failed') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-4">
                         <section id="search-bar">
                             <div class="search-bar right">
                                 <form action="{{ url('master_ip') }}" method="get">

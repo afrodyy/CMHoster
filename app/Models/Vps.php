@@ -9,10 +9,20 @@ class Vps extends Model
 {
     use HasFactory;
     protected $table = 'vps';
-    protected $fillable = ['nama', 'ip_address', 'lokasi', 'status', 'client_id'];
+    protected $fillable = ['nama', 'client_id', 'ip_id', 'location_id', 'status'];
 
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
+
+    public function ip()
+    {
+        return $this->belongsTo(Ip::class);
     }
 }

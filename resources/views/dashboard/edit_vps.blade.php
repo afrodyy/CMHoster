@@ -74,7 +74,9 @@
                                                                 <select name="client_id" class="form-control" required>
                                                                     <option value="">-- Pilih Client --</option>
                                                                     @foreach ($client as $c)
-                                                                        <option value="{{ $c->id }}">{{ $c->nama }}</option>
+                                                                        <option value="{{ $c->id }}" @if ($c->id === $vps->client_id)
+                                                                            selected
+                                                                        @endif>{{ $c->nama }}</option>
                                                                     @endforeach
                                                                 </select>
                                                                 <div class="form-control-position">
@@ -87,27 +89,31 @@
                                                         <div class="form-group">
                                                             <label for="contact-info-icon">IP Address</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="contact-info-icon"
-                                                                    class="form-control" name="ip_address"
-                                                                    value="{{ $vps->ip_address }}" placeholder="IP Address">
+                                                                <select name="ip_id" class="form-control" required>
+                                                                    <option value="">-- Pilih IP Address --</option>
+                                                                        @foreach ($ip as $i)
+                                                                            <option value="{{ $i->id }}" @if ($i->id === $vps->ip_id)
+                                                                                selected
+                                                                            @endif>{{ $i->ip_address }}</option>
+                                                                        @endforeach
+                                                                </select>
                                                                 <div class="form-control-position">
-                                                                    <i class="feather icon-smartphone"></i>
+                                                                    <i class="feather icon-cloud"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="form-group">
-                                                            <label for="contact-info-icon">Lokasi Server</label>
+                                                            <label for="contact-info-icon">Nama Server</label>
                                                             <div class="position-relative has-icon-left">
-                                                                <select name="lokasi" id="" class="form-control" required>
+                                                                <select name="location_id" id="location_id" class="form-control" required>
                                                                     <option value="">-- Pilih Lokasi Server --</option>
-                                                                    <option value="S3" @if ($vps->lokasi == 'S3')
-                                                                        selected
-                                                                        @endif>S3</option>
-                                                                    <option value="S4" @if ($vps->lokasi == 'S4')
-                                                                        selected
-                                                                        @endif>S4</option>
+                                                                    @foreach ($location as $l)
+                                                                        <option value="{{ $l->id }}" @if ($l->id === $vps->location_id)
+                                                                            selected
+                                                                        @endif>{{ $l->nama }}</option>
+                                                                    @endforeach
                                                                 </select>
                                                                 <div class="form-control-position">
                                                                     <i class="feather icon-smartphone"></i>
@@ -160,7 +166,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="{{ url('server') }}" class="btn btn-info">Kembali</a>
+                            <a href="{{ url('vps') }}" class="btn btn-info">Kembali</a>
                         </div>
                     </div>
                 </section>

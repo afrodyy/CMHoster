@@ -17,14 +17,16 @@
             <div class="content-header row">
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
+                        <div class="col-8">
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+                        </div>
                         <div class="col-12">
                             <h2 class="content-header-title float-left mb-0">Riwayat Cashbond Kamu</h2>
                         </div>
-                        @if (session('success'))
-                            <div class="alert alert-success mt-1">
-                                {{ session('success') }}
-                            </div>
-                        @endif
                     </div>
                 </div>
                 <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
@@ -39,13 +41,6 @@
                 </div>
             </div>
             <div class="content-body">
-                <div class="row">
-                    <div class="col-md-4 mt-2">
-                        <a href="{{ url('cashbond') }}" class="btn-icon btn btn-primary btn-round btn-sm mb-1">
-                            Tampilkan Semua Data
-                        </a>
-                    </div>
-                </div>
                 <!-- Table head options start -->
                 <div class="row" id="table-head">
                     <div class="col-12">
@@ -71,8 +66,8 @@
                                                 @foreach ($cashbond as $item)
                                                     <tr>
                                                         <th>{{ $loop->iteration }}.</th>
-                                                        <td>Rp. {{ number_format($item->nominal) }}</td>
-                                                        <td>Rp. {{ number_format($item->kredit) }}</td>
+                                                        <td style="color: green">Rp. {{ number_format($item->nominal) }}</td>
+                                                        <td style="color: red">Rp. {{ number_format($item->kredit) }}</td>
                                                         <td>{{ $item->tanggal_pengajuan }}</td>
                                                         <td>{{ $item->status }}</td>
                                                         <td>

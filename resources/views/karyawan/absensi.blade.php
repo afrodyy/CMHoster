@@ -27,14 +27,14 @@
                                 {{ session('failed') }}
                             </div>
                             @endif
-                            <h2 class="content-header-title float-left">Riwayat absen kamu bulan {{ date('F') }}</h2>
+                            <h2 class="content-header-title float-left mb-0">Riwayat absen kamu</h2>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-md-4 offset-1">
+                    <div class="col-4">
                         <form action="{{ url('absen') }}" method="post">
                             @csrf
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
@@ -46,13 +46,81 @@
                                 <input type="hidden" name="status" value="Telat">
                             @elseif($waktu <= '09:10:00' ) <input type="hidden" name="status" value="Tepat Waktu">
                             @endif
-                            <button type="submit" class="btn-icon btn btn-primary btn-round mb-1">Absen</button>
+                            <button type="submit" class="btn-icon btn btn-primary btn-round mb-1 mt-0">Absen</button>
                         </form>
                     </div>
                 </div>
+
                 <!-- Table head options start -->
                 <div class="row" id="table-head">
-                    <div class="col-10 offset-1">
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    @php
+                                        $date = date('n');
+                                    @endphp
+                                    <form action="{{ route('absenAjax') }}" method="get">
+                                        <select name="tanggal" id="absenFilter" class="form-control">
+                                            <option value="">-- Pilih Bulan --</option>
+                                            <option value="01" @if ($date === '01')
+                                                selected
+                                            @endif>Januari</option>
+                                            <option value="02" @if ($date === '02')
+                                                selected
+                                            @endif>Februari</option>
+                                            <option value="03" @if ($date === '03')
+                                                selected
+                                            @endif>Maret</option>
+                                            <option value="04" @if ($date === '04')
+                                                selected
+                                            @endif>April</option>
+                                            <option value="05" @if ($date === '05')
+                                                selected
+                                            @endif>Mei</option>
+                                            <option value="06" @if ($date === '06')
+                                                selected
+                                            @endif>Juni</option>
+                                            <option value="07" @if ($date === '07')
+                                                selected
+                                            @endif>Juli</option>
+                                            <option value="08" @if ($date === '08')
+                                                selected
+                                            @endif>Agustus</option>
+                                            <option value="09" @if ($date === '09')
+                                                selected
+                                            @endif>September</option>
+                                            <option value="10" @if ($date === '10')
+                                                selected
+                                            @endif>Oktober</option>
+                                            <option value="11" @if ($date === '11')
+                                                selected
+                                            @endif>November</option>
+                                            <option value="12" @if ($date === '12')
+                                                selected
+                                            @endif>Desember</option>
+                                        </select>
+                                    </form>
+                                    <p class="card-text mt-1">Total Absensi : <span class="badge badge-pill bg-info" id="total_absen">{{ $tepatWaktu + $telat }}</span></p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <span class="badge badge-pill bg-success float-right" id="total_tepat">{{ $tepatWaktu }}</span>
+                                            Tepat Waktu
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="badge badge-pill bg-warning float-right" id="total_telat">{{ $telat }}</span>
+                                            Telat
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="badge badge-pill bg-danger float-right" id="total_tidakmasuk">{{ $tidakMasuk }}</span>
+                                            Tidak Masuk
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
                         <div class="card">
                             <div class="card-content">
                                 <div class="table-responsive">
@@ -159,4 +227,42 @@
             </div>
         </div>
     </div>
+    <input type="hidden" value="{{ auth()->user()->id }}" id="user_id">
+@endsection
+
+@section('javascript')
+    <script>
+        $(document).ready(function() {
+
+            var user_id = $('#user_id').val();
+
+            fetch_attendance_data();
+
+            function fetch_attendance_data(query = '') {
+                $.ajax({
+                    url: "{{ route('absenAjax') }}",
+                    method: "GET",
+                    data: {
+                        query: query,
+                        user_id: user_id
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('tbody').html(data.table_data);
+                        $('#total_records').text(data.total_data);
+                        $('#total_tepat').text(data.total_tepat);
+                        $('#total_telat').text(data.total_telat);
+                        $('#total_tidakmasuk').text(data.total_tidakmasuk);
+                        $('#total_absen').text(data.total_absen);
+                    }
+                });
+            }
+
+            $(document).on('input', '#absenFilter', function() {
+                var query = $(this).val();
+                fetch_attendance_data(query);
+            });
+        });
+
+    </script>
 @endsection

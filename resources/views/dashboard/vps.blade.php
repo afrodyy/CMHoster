@@ -20,11 +20,6 @@
                         <div class="col-12">
                             <h2 class="content-header-title float-left mb-0">Data VPS CMHoster</h2>
                         </div>
-                        @if (session('success'))
-                            <div class="alert alert-success mt-1">
-                                {{ session('success') }}
-                            </div>
-                        @endif
                     </div>
                 </div>
                 <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
@@ -40,7 +35,18 @@
             </div>
             <div class="content-body">
                 <div class="row">
-                    <div class="col-lg-4 offset-8">
+                    <div class="col-8">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @elseif (session('failed'))
+                            <div class="alert alert-danger">
+                                {{ session('failed') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-4">
                         <section id="search-bar">
                             <div class="search-bar right">
                                 <form action="{{ url('vps') }}" method="get">
@@ -69,19 +75,24 @@
                                                 <th scope="col">Nama VM</th>
                                                 <th scope="col">Client</th>
                                                 <th scope="col">IP Address</th>
-                                                <th scope="col">Lokasi Server</th>
+                                                <th scope="col">Nama Server</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($vps as $v)
+                                            <?php
+                                            if (!isset($v->location->nama)) {
+                                                $v->location->nama = 'Tidak ada';
+                                            }
+                                            ?>
                                                 <tr>
                                                     <th scope="row">{{ $loop->iteration }}.</th>
                                                     <td>{{ $v->nama }}</td>
                                                     <td>{{ $v->client->nama }}</td>
-                                                    <td>{{ $v->ip_address }}</td>
-                                                    <td>{{ $v->lokasi }}</td>
+                                                    <td>{{ $v->ip->ip_address }}</td>
+                                                    <td>{{ $v->location->nama }}</td>
                                                     <td>{{ $v->status }}</td>
                                                     <td>
                                                         <a href="{{ url('vps/' . $v->id . '/edit') }}"
@@ -125,6 +136,10 @@
                     <form action="{{ url('vps/create') }}" method="post">
                         @csrf
                         <div class="form-group">
+                            <label for="">Nama VM</label>
+                            <input type="text" name="nama" class="form-control" placeholder="Nama VM" required>
+                        </div>
+                        <div class="form-group">
                             <label for="">Nama Client</label>
                             <select name="client_id" class="form-control" required>
                                 <option value="">-- Pilih Client --</option>
@@ -134,19 +149,23 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="">Nama VM</label>
-                            <input type="text" name="nama" class="form-control" placeholder="Nama VM" required>
-                        </div>
-                        <div class="form-group">
                             <label for="">IP Address</label>
-                            <input type="text" name="ip_address" class="form-control" placeholder="IP Address" required>
+                            <select name="ip_id" id="ip_id" class="form-control" required>
+                                <option value="">-- Pilih IP Address --</option>
+                                @foreach ($ip as $i)
+                                    @if ($i->status !== 'Sudah digunakan')
+                                        <option value="{{ $i->id }}">{{ $i->ip_address }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="">Lokasi Server</label>
-                            <select name="lokasi" id="" class="form-control" required>
+                            <label for="">Nama Server</label>
+                            <select name="location_id" id="location_id" class="form-control" required>
                                 <option value="">-- Pilih Lokasi Server --</option>
-                                <option value="S3">S3</option>
-                                <option value="S4">S4</option>
+                                @foreach ($location as $l)
+                                    <option value="{{ $l->id }}">{{ $l->nama }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
