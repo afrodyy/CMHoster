@@ -372,6 +372,9 @@ class KaryawanController extends Controller
             $date = $value->tanggal;
         };
 
+
+        'asdasdasdasd';
+
         if (isset($date)) {
             return redirect('absensi')->with('failed', 'Kamu sudah absen hari ini!');
         } else {
